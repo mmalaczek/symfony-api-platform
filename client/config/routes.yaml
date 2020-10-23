@@ -1,3 +1,7 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+comment_index:
+  path: /
+  controller: App\Controller\CommentController::index
+
+comment_new:
+  path: /new
+  controller: App\Controller\CommentController::new

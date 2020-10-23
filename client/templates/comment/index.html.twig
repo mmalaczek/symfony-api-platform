@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Komentarze{% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}
+
+{% block body %}
+    <h3><a href="{{ path('comment_new') }}">Dodaj nowy komentarz</a></h3>
+    <table>
+        <thead>
+        <tr>
+            <th>Treść</th>
+            <th>Data dodania</th>
+            <th>Nick autora</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Lorem ipsum</td>
+            <td>2019-05-01</td>
+            <td>Autor</td>
+        </tr>
+        </tbody>
+    </table>
+{% endblock %}
