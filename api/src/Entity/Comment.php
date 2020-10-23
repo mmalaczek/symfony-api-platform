@@ -15,24 +15,27 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Comment
 {
     /**
+     * @var int
+     *
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @var int
      */
     private $id;
 
     /**
+     * @var string
+     *
      * @Assert\NotBlank
      * @ORM\Column(type="text")
-     * @var string
      */
     private $message;
 
     /**
+     * @var DateTime
+     *
      * @Assert\NotBlank
      * @ORM\Column(type="datetime")
-     * @var DateTime
      */
     private $createdAt;
 
@@ -91,6 +94,10 @@ class Comment
         $this->createdAt = $createdAt;
     }
 
+    /**
+     * @param Author|null $author
+     * @param bool $updateRelation
+     */
     public function setAuthor(?Author $author, bool $updateRelation = true): void
     {
         $this->author = $author;
@@ -99,6 +106,9 @@ class Comment
         }
     }
 
+    /**
+     * @return Author|null
+     */
     public function getAuthor(): ?Author
     {
         return $this->author;

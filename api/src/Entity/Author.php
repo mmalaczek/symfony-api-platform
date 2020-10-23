@@ -15,24 +15,27 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Author
 {
     /**
+     * @var int
+     *
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @var int
      */
     private $id;
 
     /**
+     * @var string
+     *
      * @Assert\NotBlank
      * @ORM\Column(type="string", length=30)
-     * @var string
      */
     private $nick;
 
     /**
+     * @var string
+     *
      * @Assert\Email(message = "The email '{{ value }}' is not a valid email.")
      * @ORM\Column(type="string", length=80)
-     * @var string
      */
     private $email;
 
@@ -49,7 +52,7 @@ class Author
     /**
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -57,7 +60,7 @@ class Author
     /**
      * @return string
      */
-    public function getNick()
+    public function getNick(): ?string
     {
         return $this->nick;
     }
@@ -65,7 +68,7 @@ class Author
     /**
      * @param string $nick
      */
-    public function setNick($nick)
+    public function setNick(string $nick): void
     {
         $this->nick = $nick;
     }
@@ -73,7 +76,7 @@ class Author
     /**
      * @return string
      */
-    public function getEmail()
+    public function getEmail(): ?string
     {
         return $this->email;
     }
@@ -81,11 +84,15 @@ class Author
     /**
      * @param string $email
      */
-    public function setEmail($email)
+    public function setEmail(string $email): void
     {
         $this->email = $email;
     }
 
+    /**
+     * @param Comment $comment
+     * @param bool $updateRelation
+     */
     public function addComment(Comment $comment, bool $updateRelation = true): void
     {
         if ($this->comments->contains($comment)) {
