@@ -2,10 +2,10 @@
 
 namespace App\Controller;
 
+use App\Form\Type\CommentType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
 
 class CommentController extends AbstractController
 {
@@ -16,10 +16,19 @@ class CommentController extends AbstractController
         ]);
     }
 
-    public function new(Request $request)
+    public function new(Request $request): Response
     {
-        return $this->render('comment/new.html.twig', [
+        $form = $this->createForm(CommentType::class, null);
 
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+
+            return $this->redirectToRoute('comment_index');
+        }
+
+        return $this->render('comment/new.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 

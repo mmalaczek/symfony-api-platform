@@ -3,5 +3,10 @@
 {% block title %}Dodaj nowy komentarz{% endblock %}
 
 {% block body %}
+    <h3><a href="{{ path('comment_index') }}">Wróć</a></h3>
     <h2>Dodaj nowy komentarz</h2>
+    <div>
+        {{ form(form) }}
+    </div>
+    <button type="submit" class="btn btn-primary">Zapisz</button>
 {% endblock %}
