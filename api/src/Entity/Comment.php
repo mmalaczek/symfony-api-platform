@@ -46,6 +46,11 @@ class Comment
      */
     private $author;
 
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
+
     /**
      * @return int
      */
