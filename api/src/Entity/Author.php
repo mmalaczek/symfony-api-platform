@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -33,6 +35,16 @@ class Author
      * @var string
      */
     private $email;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="author", cascade={"persist", "remove"})
+     */
+    private $comments;
+
+    public function __construct()
+    {
+        $this->comments = new ArrayCollection();
+    }
 
     /**
      * @return int
@@ -72,6 +84,26 @@ class Author
     public function setEmail($email)
     {
         $this->email = $email;
+    }
+
+    public function addComment(Comment $comment, bool $updateRelation = true): void
+    {
+        if ($this->comments->contains($comment)) {
+            return;
+        }
+
+        $this->comments->add($comment);
+        if ($updateRelation) {
+            $comment->setAuthor($this, false);
+        }
+    }
+
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getComments(): iterable
+    {
+        return $this->comments;
     }
 
 }

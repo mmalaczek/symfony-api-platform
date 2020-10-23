@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -34,6 +35,16 @@ class Comment
      * @var DateTime
      */
     private $createdAt;
+
+    /**
+     * @var Author
+     *
+     * @Assert\NotNull
+     * @ORM\ManyToOne(targetEntity=Author::class, inversedBy="comments")
+     * @ORM\JoinColumn(referencedColumnName="id", nullable=false)
+     * @ApiSubresource
+     */
+    private $author;
 
     /**
      * @return int
@@ -73,6 +84,19 @@ class Comment
     public function setCreatedAt(DateTime $createdAt): void
     {
         $this->createdAt = $createdAt;
+    }
+
+    public function setAuthor(?Author $author, bool $updateRelation = true): void
+    {
+        $this->author = $author;
+        if ($updateRelation) {
+            $author->addComment($this, false);
+        }
+    }
+
+    public function getAuthor(): ?Author
+    {
+        return $this->author;
     }
 
 }
