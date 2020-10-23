@@ -2,6 +2,7 @@
 
 namespace App\Form\Type;
 
+use App\Model\Comment;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -35,8 +36,7 @@ class CommentType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-//            'data_class' => Comment::class,
-            'data_class' => null
+            'data_class' => Comment::class,
         ]);
     }
 }

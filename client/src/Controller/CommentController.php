@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Form\Type\CommentType;
+use App\Model\Comment;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +19,8 @@ class CommentController extends AbstractController
 
     public function new(Request $request): Response
     {
-        $form = $this->createForm(CommentType::class, null);
+        $comment = new Comment();
+        $form = $this->createForm(CommentType::class, $comment);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
