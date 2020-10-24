@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -30,6 +32,7 @@ class Author
     /**
      * @var string
      *
+     * @ApiFilter(SearchFilter::class, strategy="ipartial")
      * @Assert\NotBlank
      * @Assert\Length(min=5, minMessage = "Nick must be at min 5 characters long.")
      * @ORM\Column(type="string", length=30, unique=true)
