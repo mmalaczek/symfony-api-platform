@@ -2,22 +2,34 @@
 
 {% block title %}Dodaj nowy komentarz{% endblock %}
 
+{% block stylesheets %}
+    <style>
+        input[type=text], input[type=email] {
+            width: 30%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            box-sizing: border-box;
+        }
+
+    </style>
+{% endblock %}
+
 {% block body %}
     <h3><a href="{{ path('comment_index') }}">Wróć</a></h3>
     <h2>Dodaj nowy komentarz</h2>
     {{ form_start(form) }}
     <div>
-        <label>Nick</label>
+        <label for="nick">Nick</label>
         {{ form_widget(form.nick) }}
         {{ form_errors(form.nick) }}
     </div><br />
     <div>
-        <label>Email</label>
+        <label for="email">Email</label>
         {{ form_widget(form.email) }}
         {{ form_errors(form.email) }}
     </div><br />
     <div>
-        <label>Treść</label>
+        <label for="message">Treść</label>
         {{ form_widget(form.message, {'attr': {'class': 'form-control', 'rows' : '5'}}) }}
         {{ form_errors(form.message) }}
     </div>

@@ -3,27 +3,97 @@
 {% block title %}Komentarze{% endblock %}
 
 {% block stylesheets %}
+    <style>
+        #comments {
+            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
 
+        #comments td, #comments th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        #comments tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        #comments tr:hover {
+            background-color: #ddd;
+        }
+
+        #comments th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #4CAF50;
+            color: white;
+        }
+
+
+        .pagination {
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .pagination a {
+            color: black;
+            float: left;
+            padding: 8px 16px;
+            text-decoration: none;
+            transition: background-color .3s;
+            border: 1px solid #ddd;
+        }
+
+        .pagination a.active {
+            background-color: #4CAF50;
+            color: white;
+            border: 1px solid #4CAF50;
+        }
+
+        .pagination a:hover:not(.active) {
+            background-color: #ddd;
+        }
+    </style>
 {% endblock %}
 
 {% block body %}
-    <h3><a href="{{ path('comment_new') }}">Dodaj nowy komentarz</a></h3>
-    <table>
-        <thead>
-        <tr>
-            <th>Treść</th>
-            <th>Data dodania</th>
-            <th>Nick autora</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for comment in comments %}
+    <h3><a href="{{ path('comment_new') }}">Dodaj nowy komentarz >></a></h3>
+    <div>
+        <span>Wyszukaj po autorze:</span>
+        <input type="text" name="search" placeholder="Search..">
+        <button type="submit" class="btn btn-primary">Wyszukaj</button>
+        <br/><br/>
+    </div>
+    <div>
+        <table id="comments">
+            <thead>
             <tr>
-                <td>{{ comment.message }}</td>
-                <td>{{ comment.createdAt|date('Y-m-d H:i') }}</td>
-                <td>{{ comment.author.nick }}</td>
+                <th>Treść</th>
+                <th>Data dodania</th>
+                <th>Nick autora</th>
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for comment in comments %}
+                <tr>
+                    <td>{{ comment.message }}</td>
+                    <td>{{ comment.createdAt|date('Y-m-d H:i') }}</td>
+                    <td>{{ comment.author.nick }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="pagination">
+        <a href="#">&laquo;</a>
+        <a href="#">1</a>
+        <a href="#" class="active">2</a>
+        <a href="#">3</a>
+        <a href="#">4</a>
+        <a href="#">5</a>
+        <a href="#">6</a>
+        <a href="#">&raquo;</a>
+    </div>
 {% endblock %}
