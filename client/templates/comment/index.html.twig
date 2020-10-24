@@ -21,7 +21,7 @@
             <tr>
                 <td>{{ comment.message }}</td>
                 <td>{{ comment.createdAt|date('Y-m-d H:i') }}</td>
-                <td>{{ comment.author }}</td>
+                <td>{{ comment.author.nick }}</td>
             </tr>
         {% endfor %}
         </tbody>

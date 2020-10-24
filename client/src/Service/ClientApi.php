@@ -54,7 +54,6 @@ class ClientApi
     {
         $data = [
             'message' => $formData->getMessage(),
-            'createdAt' => '2020-10-24T15:01:41.072Z',
             'author' => '/api/authors/1'
         ];
 
