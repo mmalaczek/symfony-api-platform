@@ -73,6 +73,7 @@
         <table id="comments">
             <thead>
             <tr>
+                <th>L.P.</th>
                 <th>Treść</th>
                 <th>Data dodania</th>
                 <th>Nick autora</th>
@@ -81,6 +82,7 @@
             <tbody>
             {% for comment in comments %}
                 <tr>
+                    <td>{{ loop.index }}</td>
                     <td>{{ comment.message }}</td>
                     <td>{{ comment.createdAt|date('Y-m-d H:i') }}</td>
                     <td>{{ comment.author.nick }}</td>
