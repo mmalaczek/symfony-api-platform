@@ -7,9 +7,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource
+ * @ApiResource(
+ *     normalizationContext={"groups"={"read"}},
+ *     denormalizationContext={"groups"={"write"}}
+ * )
  * @ORM\Entity
  */
 class Author
@@ -28,6 +32,7 @@ class Author
      *
      * @Assert\NotBlank
      * @ORM\Column(type="string", length=30)
+     * @Groups({"read", "write"})
      */
     private $nick;
 
@@ -36,6 +41,7 @@ class Author
      *
      * @Assert\Email(message = "The email '{{ value }}' is not a valid email.")
      * @ORM\Column(type="string", length=80)
+     * @Groups({"read", "write"})
      */
     private $email;
 
