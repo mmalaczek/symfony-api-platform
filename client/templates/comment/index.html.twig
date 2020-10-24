@@ -61,9 +61,12 @@
 {% block body %}
     <h3><a href="{{ path('comment_new') }}">Dodaj nowy komentarz >></a></h3>
     <div>
-        <span>Wyszukaj po autorze:</span>
-        <input type="text" name="search" placeholder="Search..">
+        {{ form_start(form) }}
+        <label for="search">Wyszukaj po autorze:</label>
+        {{ form_widget(form.search, {'attr': {'class': 'form-control', 'placeholder': 'Search...'}}) }}
+        {{ form_errors(form.search) }}
         <button type="submit" class="btn btn-primary">Wyszukaj</button>
+        {{ form_end(form) }}
         <br/><br/>
     </div>
     <div>

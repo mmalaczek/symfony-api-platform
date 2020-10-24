@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Form\Type\CommentType;
+use App\Form\Type\SearchType;
 use App\Model\Comment;
 use App\Service\ClientApi;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,11 +27,29 @@ class CommentController extends AbstractController
         $this->clientApi = $clientApi;
     }
 
-    public function index(): Response
+    /**
+     * @param Request $request
+     * @return Response
+     * @throws TransportExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
+     */
+    public function index(Request $request): Response
     {
         $comments = $this->clientApi->getComments();
 
+        $form = $this->createForm(SearchType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            return $this->redirectToRoute('comment_index');
+        }
+
         return $this->render('comment/index.html.twig', [
+            'form' => $form->createView(),
             'comments' => $comments
         ]);
     }
