@@ -10,11 +10,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource(
- *     normalizationContext={"groups"={"read"}},
- *     denormalizationContext={"groups"={"write"}}
- * )
  * @ORM\Entity
+ * @ApiResource(
+ *     normalizationContext={"groups"={"author:read"}},
+ *     denormalizationContext={"groups"={"author:write"}}
+ * )
  */
 class Author
 {
@@ -32,7 +32,7 @@ class Author
      *
      * @Assert\NotBlank
      * @ORM\Column(type="string", length=30)
-     * @Groups({"read", "write"})
+     * @Groups({"comment:read", "author:read", "author:write"})
      */
     private $nick;
 
@@ -41,7 +41,7 @@ class Author
      *
      * @Assert\Email(message = "The email '{{ value }}' is not a valid email.")
      * @ORM\Column(type="string", length=80)
-     * @Groups({"read", "write"})
+     * @Groups({"author:read", "author:write"})
      */
     private $email;
 

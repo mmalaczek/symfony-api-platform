@@ -3,14 +3,18 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Annotation\ApiSubresource;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource()
  * @ORM\Entity
+ * @ApiResource(
+ *     iri="http://schema.org/Review",
+ *     denormalizationContext={"groups": {"comment:write"}},
+ *     normalizationContext={"groups": {"comment:read"}}
+ * )
  */
 class Comment
 {
@@ -28,6 +32,7 @@ class Comment
      *
      * @Assert\NotBlank
      * @ORM\Column(type="text")
+     * @Groups({"comment:read", "comment:write"})
      */
     private $message;
 
@@ -36,6 +41,7 @@ class Comment
      *
      * @Assert\NotBlank
      * @ORM\Column(type="datetime")
+     * @Groups({"comment:read"})
      */
     private $createdAt;
 
@@ -45,7 +51,7 @@ class Comment
      * @Assert\NotNull
      * @ORM\ManyToOne(targetEntity=Author::class, inversedBy="comments")
      * @ORM\JoinColumn(referencedColumnName="id", nullable=false)
-     * @ApiSubresource
+     * @Groups({"comment:read", "comment:write"})
      */
     private $author;
 
