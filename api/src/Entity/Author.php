@@ -31,7 +31,8 @@ class Author
      * @var string
      *
      * @Assert\NotBlank
-     * @ORM\Column(type="string", length=30)
+     * @Assert\Length(min=5, minMessage = "Nick must be at min 5 characters long.")
+     * @ORM\Column(type="string", length=30, unique=true)
      * @Groups({"comment:read", "author:read", "author:write"})
      */
     private $nick;

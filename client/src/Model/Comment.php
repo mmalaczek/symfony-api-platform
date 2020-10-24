@@ -9,7 +9,7 @@ class Comment
     /**
      * @var string
      *
-     * @Assert\NotBlank(message="Pole nick nie może byc puste.")
+     * @Assert\Length(min=5, minMessage = "Nick must be at min 5 characters long.")
      */
     protected $nick;
 
@@ -23,7 +23,7 @@ class Comment
     /**
      * @var string
      *
-     * @Assert\NotBlank(message="Pole treść nie może byc puste.")
+     * @Assert\NotBlank(message="The message cannot be empty.")
      */
     protected $message;
 
