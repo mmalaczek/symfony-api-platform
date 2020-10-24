@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class ClientApi
@@ -12,12 +13,19 @@ class ClientApi
     private $client;
 
     /**
+     * @var string
+     */
+    private $apiUrl;
+
+    /**
      * ClientApi constructor.
      * @param HttpClientInterface $client
+     * @param ParameterBagInterface $params
      */
-    public function __construct(HttpClientInterface $client)
+    public function __construct(HttpClientInterface $client, ParameterBagInterface $params)
     {
         $this->client = $client;
+        $this->apiUrl = $params->get('api_url');
     }
 
     /**
@@ -32,7 +40,7 @@ class ClientApi
     {
         $response = $this->client->request(
             'GET',
-            'http://127.0.0.1:8000/api/comments?page=1'
+            $this->apiUrl.'/api/comments?page=1'
         );
 
         return $response->toArray()['hydra:member'];
@@ -52,7 +60,7 @@ class ClientApi
 
         $this->client->request(
             'POST',
-            'http://127.0.0.1:8000/api/comments',
+            $this->apiUrl.'/api/comments',
             ['json' => $data]
         );
     }
