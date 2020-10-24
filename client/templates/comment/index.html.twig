@@ -17,11 +17,13 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>Lorem ipsum</td>
-            <td>2019-05-01</td>
-            <td>Autor</td>
-        </tr>
+        {% for comment in comments %}
+            <tr>
+                <td>{{ comment.message }}</td>
+                <td>{{ comment.createdAt|date('Y-m-d H:i') }}</td>
+                <td>{{ comment.author }}</td>
+            </tr>
+        {% endfor %}
         </tbody>
     </table>
 {% endblock %}
