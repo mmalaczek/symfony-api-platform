@@ -2,7 +2,9 @@
 
 namespace App\Service;
 
+use App\Model\Comment;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class ClientApi
@@ -36,7 +38,7 @@ class ClientApi
      * @throws \Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     * @throws TransportExceptionInterface
      */
     public function getComments(int $page = 1, string $nick = null): array
     {
@@ -50,14 +52,40 @@ class ClientApi
     }
 
     /**
-     * @param $formData
-     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     * @param Comment $formData
+     * @throws TransportExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
      */
-    public function addComment($formData): void
+    public function addComment(Comment $formData): void
     {
+        $response = $this->client->request('GET',
+            $this->apiUrl . '/api/authors?nick=' . $formData->getNick()
+        );
+
+        $author = $response->toArray()["hydra:member"];
+        if (empty($author)) {
+            $response = $this->client->request(
+                'POST',
+                $this->apiUrl . '/api/authors',
+                ['json' =>
+                    [
+                        'nick' => $formData->getNick(),
+                        'email' => $formData->getEmail()
+                    ]
+                ]
+            );
+
+            $id = $response->toArray()['id'];
+        } else {
+            $id = $author[0]['id'];
+        }
+
         $data = [
             'message' => $formData->getMessage(),
-            'author' => '/api/authors/1'
+            'author' => '/api/authors/' . $id
         ];
 
         $this->client->request(
