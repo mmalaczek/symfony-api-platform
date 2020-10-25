@@ -11,9 +11,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity
  * @ApiResource(
- *     iri="http://schema.org/Review",
  *     denormalizationContext={"groups": {"comment:write"}},
- *     normalizationContext={"groups": {"comment:read"}}
+ *     normalizationContext={"groups": {"comment:read"}},
+ *     attributes={"pagination_items_per_page"=10}
  * )
  */
 class Comment
