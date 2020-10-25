@@ -1,0 +1,15 @@
+{% set currentPage = app.request.query.get('page') ?: 1 %}
+{% set currentRoute = app.request.attributes.get('_route') %}
+{% set currentParams = app.request.query.all %}
+
+<div class="pagination">
+    <a href="{{ currentPage > 1 ? path(currentRoute, currentParams|merge({page: currentPage - 1})) : '#' }}">&laquo;</a>
+    {% for i in range(low=1, high=totalPages, step=1) %}
+        {% if currentPage == i %}
+            <a href="{{ path(currentRoute, currentParams|merge({page: i})) }}" class="active">{{ i }}</a>
+        {% else %}
+            <a href="{{ path(currentRoute, currentParams|merge({page: i})) }}">{{ i }}</a>
+        {% endif %}
+    {% endfor %}
+    <a href="{{ currentPage < totalPages ? path(currentRoute, currentParams|merge({page: currentPage + 1})) : '#' }}">&raquo;</a>
+</div>

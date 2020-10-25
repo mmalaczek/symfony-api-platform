@@ -6,6 +6,7 @@ use App\Form\Type\CommentType;
 use App\Form\Type\SearchType;
 use App\Model\Comment;
 use App\Model\Search;
+use App\Pagination\Pagination;
 use App\Service\ClientApi;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
@@ -30,6 +31,7 @@ class CommentController extends AbstractController
 
     /**
      * @param Request $request
+     * @param Pagination $pagination
      * @return Response
      * @throws TransportExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
@@ -37,12 +39,11 @@ class CommentController extends AbstractController
      * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
      */
-    public function index(Request $request): Response
+    public function index(Request $request, Pagination $pagination): Response
     {
-        $comments = $this->clientApi->getComments();
-        $search = new Search();
-
-        $form = $this->createForm(SearchType::class, $search);
+        $page = $request->query->getInt('page', 1);
+        $comments = $this->clientApi->getComments($page);
+        $form = $this->createForm(SearchType::class, new Search());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -52,7 +53,8 @@ class CommentController extends AbstractController
 
         return $this->render('comment/index.html.twig', [
             'form' => $form->createView(),
-            'comments' => $comments
+            'comments' => $comments['hydra:member'],
+            'totalPages' => $pagination->totalPages($comments['hydra:totalItems'])
         ]);
     }
 

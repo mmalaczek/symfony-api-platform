@@ -29,6 +29,7 @@ class ClientApi
     }
 
     /**
+     * @param int $page
      * @return mixed
      * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface
@@ -36,14 +37,14 @@ class ClientApi
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    public function getComments()
+    public function getComments(int $page = 1)
     {
         $response = $this->client->request(
             'GET',
-            $this->apiUrl.'/api/comments?page=1'
+            $this->apiUrl.'/api/comments?page='.$page
         );
 
-        return $response->toArray()['hydra:member'];
+        return $response->toArray();
     }
 
     /**
