@@ -59,6 +59,7 @@
 {% endblock %}
 
 {% block body %}
+    {% include 'messages.html.twig' %}
     <h3><a href="{{ path('comment_new') }}">Dodaj nowy komentarz >></a></h3>
     <div>
         {{ form_start(form) }}

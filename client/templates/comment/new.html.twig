@@ -18,6 +18,7 @@
     <h3><a href="{{ path('comment_index') }}">Wróć</a></h3>
     <h2>Dodaj nowy komentarz</h2>
     {{ form_start(form) }}
+    {% include 'messages.html.twig' %}
     <div>
         <label for="nick">Nick</label>
         {{ form_widget(form.nick) }}

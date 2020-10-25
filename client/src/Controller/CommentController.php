@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Form\Type\CommentType;
 use App\Form\Type\SearchType;
 use App\Model\Comment;
+use App\Model\Search;
 use App\Service\ClientApi;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
@@ -39,8 +40,9 @@ class CommentController extends AbstractController
     public function index(Request $request): Response
     {
         $comments = $this->clientApi->getComments();
+        $search = new Search();
 
-        $form = $this->createForm(SearchType::class);
+        $form = $this->createForm(SearchType::class, $search);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -67,6 +69,8 @@ class CommentController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->clientApi->addComment($form->getData());
+            $this->addFlash('success', 'Komentarz został dodany.');
+
             return $this->redirectToRoute('comment_index');
         }
 
