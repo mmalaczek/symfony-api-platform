@@ -30,20 +30,22 @@ class ClientApi
 
     /**
      * @param int $page
-     * @return mixed
+     * @param string|null $nick
+     * @return array
      * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    public function getComments(int $page = 1)
+    public function getComments(int $page = 1, string $nick = null): array
     {
-        $response = $this->client->request(
-            'GET',
-            $this->apiUrl.'/api/comments?page='.$page
-        );
+        $url = $this->apiUrl . '/api/comments?page=' . $page;
+        if ($nick) {
+            $url.= '&author.nick='.$nick;
+        }
 
+        $response = $this->client->request('GET', $url);
         return $response->toArray();
     }
 
@@ -60,7 +62,7 @@ class ClientApi
 
         $this->client->request(
             'POST',
-            $this->apiUrl.'/api/comments',
+            $this->apiUrl . '/api/comments',
             ['json' => $data]
         );
     }

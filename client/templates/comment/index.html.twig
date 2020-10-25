@@ -67,6 +67,9 @@
         {{ form_widget(form.search, {'attr': {'class': 'form-control', 'placeholder': 'Search...'}}) }}
         {{ form_errors(form.search) }}
         <button type="submit" class="btn btn-primary">Wyszukaj</button>
+        {% if form.vars.value.search != '' %}
+            <a href="{{ path('comment_index') }}">Wyczyść filtry</a>
+        {% endif %}
         {{ form_end(form) }}
         <br/><br/>
     </div>

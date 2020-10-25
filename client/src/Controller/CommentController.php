@@ -42,14 +42,15 @@ class CommentController extends AbstractController
     public function index(Request $request, Pagination $pagination): Response
     {
         $page = $request->query->getInt('page', 1);
-        $comments = $this->clientApi->getComments($page);
+        $nick = null;
+
         $form = $this->createForm(SearchType::class, new Search());
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-
-            return $this->redirectToRoute('comment_index');
+            $nick = $form->getData()->getSearch();
         }
+
+        $comments = $this->clientApi->getComments($page, $nick);
 
         return $this->render('comment/index.html.twig', [
             'form' => $form->createView(),
