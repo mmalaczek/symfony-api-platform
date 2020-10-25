@@ -53,7 +53,7 @@ class Author
 
     /**
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="author", cascade={"persist", "remove"})
-     * @Groups("author:read")
+     * @Groups({"author:read", "author:write"})
      * @ApiSubresource
      */
     private $comments;

@@ -34,7 +34,7 @@ class Comment
      *
      * @Assert\NotBlank
      * @ORM\Column(type="text")
-     * @Groups({"comment:read", "comment:write"})
+     * @Groups({"author:read", "author:write", "comment:read", "comment:write"})
      */
     private $message;
 
@@ -43,7 +43,7 @@ class Comment
      *
      * @Assert\NotBlank
      * @ORM\Column(type="datetime")
-     * @Groups({"comment:read"})
+     * @Groups({"author:read", "comment:read"})
      */
     private $createdAt;
 
