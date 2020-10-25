@@ -4,6 +4,10 @@
 
 {% block stylesheets %}
     <style>
+        a {
+            color: hotpink;
+        }
+
         input[type=text], input[type=email] {
             width: 30%;
             padding: 12px 20px;
@@ -11,11 +15,24 @@
             box-sizing: border-box;
         }
 
+        .button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+
     </style>
 {% endblock %}
 
 {% block body %}
-    <h3><a href="{{ path('comment_index') }}">Wróć</a></h3>
+    <h3><a href="{{ path('comment_index') }}"><< Wróć</a></h3>
     <h2>Dodaj nowy komentarz</h2>
     {{ form_start(form) }}
     {% include 'messages.html.twig' %}
@@ -31,10 +48,10 @@
     </div><br />
     <div>
         <label for="message">Treść</label>
-        {{ form_widget(form.message, {'attr': {'class': 'form-control', 'rows' : '5'}}) }}
+        {{ form_widget(form.message, {'attr': {'class': 'form-control', 'cols': 50, 'rows' : 8}}) }}
         {{ form_errors(form.message) }}
     </div>
-    <button type="submit" class="btn btn-primary">Zapisz</button>
+    <button type="submit" class="button">Zapisz</button>
     {{ form_end(form) }}
 
 {% endblock %}
