@@ -42,7 +42,7 @@ class ClientApi
     {
         $url = $this->apiUrl . '/api/comments?page=' . $page;
         if ($nick) {
-            $url.= '&author.nick='.$nick;
+            $url .= '&author.nick=' . $nick;
         }
 
         $response = $this->client->request('GET', $url);

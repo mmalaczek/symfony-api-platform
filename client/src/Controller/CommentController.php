@@ -43,6 +43,8 @@ class CommentController extends AbstractController
     {
         $page = $request->query->getInt('page', 1);
         $nick = null;
+        $comments = [];
+        $totalItems = 0;
 
         $form = $this->createForm(SearchType::class, new Search());
         $form->handleRequest($request);
@@ -50,12 +52,20 @@ class CommentController extends AbstractController
             $nick = $form->getData()->getSearch();
         }
 
-        $comments = $this->clientApi->getComments($page, $nick);
+        try {
+            $comments = $this->clientApi->getComments($page, $nick);
+            if (!empty($comments)) {
+                $totalItems = $comments['hydra:totalItems'];
+                $comments = $comments['hydra:member'];
+            }
+        } catch (\Exception $e) {
+            $this->addFlash('error', 'Błąd z połączeniem z API: '.$e->getMessage());
+        }
 
         return $this->render('comment/index.html.twig', [
             'form' => $form->createView(),
-            'comments' => $comments['hydra:member'],
-            'totalPages' => $pagination->totalPages($comments['hydra:totalItems'])
+            'comments' => $comments,
+            'totalPages' => $pagination->totalPages($totalItems)
         ]);
     }
 
@@ -71,9 +81,12 @@ class CommentController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->clientApi->addComment($form->getData());
-            $this->addFlash('success', 'Komentarz został dodany.');
-
+            try {
+                $this->clientApi->addComment($form->getData());
+                $this->addFlash('success', 'Komentarz został dodany.');
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Błąd podczas dodawania nowego komentarza: '.$e->getMessage());
+            }
             return $this->redirectToRoute('comment_index');
         }
 
