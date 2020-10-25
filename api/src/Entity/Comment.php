@@ -50,7 +50,7 @@ class Comment
     /**
      * @var Author
      *
-     * @ApiFilter(SearchFilter::class)
+     * @ApiFilter(SearchFilter::class, properties={"author.nick"})
      * @Assert\NotNull
      * @ORM\ManyToOne(targetEntity=Author::class, inversedBy="comments")
      * @ORM\JoinColumn(referencedColumnName="id", nullable=false)
